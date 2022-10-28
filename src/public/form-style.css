@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+body {
+    background: rgb(2,0,36);
+    background: linear-gradient(360deg, rgba(2,0,36,1) 0%, rgba(4,4,150,1) 45%, rgba(1,169,234,1) 83%, rgba(0,212,255,1) 97%);
+    min-width: 90vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 25px;
+    margin-bottom: 20px;
+    margin-top: -20px
+}
+
+form {
+    width:  500px;
+    height: 400px;
+    border: 3px solid #6f1277;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+fieldset {
+    height: 80px;
+    width: 300px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+label {
+    margin: 5px;
+    width: 100%;
+    text-align: start;
+}
+
+input {
+    height: 35px;
+    border-radius: 15px;
+    border: none;
+}
+
+input[type=text], input[type=password] {
+    width: 300px;
+    padding-left: 15px;
+    background-color: #d6d6d6;
+}
+
+input[type=submit] {
+    background-color: #6f1277;
+    width: 150px;
+    margin: 0 auto;
+    transition: 500ms
+}
+
+input[type=submit]:hover {
+    background-color: antiquewhite;
+}
