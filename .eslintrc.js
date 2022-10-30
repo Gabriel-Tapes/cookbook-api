@@ -20,6 +20,7 @@ module.exports = {
         "prettier"
     ],
     "rules": {
+        "no-useless-constructor": 0,
         "prettier/prettier": "error"
     }
 }
