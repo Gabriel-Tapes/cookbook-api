@@ -22,6 +22,7 @@ module.exports = {
     "rules": {
         "no-useless-constructor": 0,
         "@typescript-eslint/no-non-null-assertion": "off",
+        "array-callback-return": "off",
         "prettier/prettier": "error"
     }
 }

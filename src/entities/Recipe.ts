@@ -1,75 +1,84 @@
 import { v4 as uuidv4 } from 'uuid'
 
 export interface RecipeProps {
-    readonly id: string
-    name: string
-    ingredients: string[]
-    howToPrepare: string
+  readonly id: string
+  title: string
+  ingredients: string[]
+  howToPrepare: string
 }
 
 export class Recipe {
-   private props: RecipeProps
+  private props: RecipeProps
 
-   get id () {
-      return this.props.id
-   }
+  get id() {
+    return this.props.id
+  }
 
-   set name (name: string) {
-      if(!name)
-         throw new Error('Recipe name error, cannot set a empty value for name')
+  set title(title: string) {
+    if (!title)
+      throw new Error('Recipe title error, cannot set a empty value for title')
 
-      this.props.name = name
-   }
+    this.props.title = title
+  }
 
-   get name () {
-      return this.props.name
-   }
+  get title() {
+    return this.props.title
+  }
 
-   set ingredients (ingredients: string[]) {
-      if(!ingredients.length)
-         throw new Error('Recipe ingredients error, cannot set a empty list for ingredients')
+  set ingredients(ingredients: string[]) {
+    if (!ingredients.length)
+      throw new Error(
+        'Recipe ingredients error, cannot set a empty list for ingredients'
+      )
 
-      ingredients.map(ingredient => {
-         if(!ingredient)
-            throw new Error('Recipe ingredients ingredient error, cannot set a empty value for an ingredient')
-      })
+    ingredients.map(ingredient => {
+      if (!ingredient)
+        throw new Error(
+          'Recipe ingredients ingredient error, cannot set a empty value for an ingredient'
+        )
+    })
 
-      this.props.ingredients = ingredients
-   }
+    this.props.ingredients = ingredients
+  }
 
-   get ingredients () {
-      return this.props.ingredients
-   }
+  get ingredients() {
+    return this.props.ingredients
+  }
 
-   set howToPrepare (howToPrepare: string) {
-      if(!howToPrepare)
-         throw new Error('Recipe hoToPrepare error, cannot set a empty value for howToPrepare')
+  set howToPrepare(howToPrepare: string) {
+    if (!howToPrepare)
+      throw new Error(
+        'Recipe hoToPrepare error, cannot set a empty value for howToPrepare'
+      )
 
-      this.howToPrepare = howToPrepare
-   }
+    this.howToPrepare = howToPrepare
+  }
 
-   get howToPrepare () {
-      return this.props.howToPrepare
-   }
+  get howToPrepare() {
+    return this.props.howToPrepare
+  }
 
-   constructor ({
-      name,
+  constructor(
+    { title, ingredients, howToPrepare }: Omit<RecipeProps, 'id'>,
+    id?: string
+  ) {
+    if (!(title && ingredients.length && howToPrepare))
+      throw new Error(
+        'Recipe props error, cannot create a recipe with empty values to title, ingredients or howToPrepare'
+      )
+
+    ingredients.map(ingredient => {
+      if (!ingredient)
+        throw new Error(
+          'Recipe ingredient error, cannot set empty ingredients values to create a new recipe'
+        )
+    })
+
+    this.props = {
+      id: id || uuidv4(),
+      title,
       ingredients,
       howToPrepare
-   }: Omit<RecipeProps, 'id'>, id?: string) {
-      if (!(name && ingredients.length && howToPrepare))
-         throw new Error('Recipe props error, cannot create a recipe with empty values to name, ingredients or howToPrepare')
-
-      ingredients.map(ingredient => {
-         if (!ingredient) 
-            throw new Error('Recipe ingredient error, cannot set empty ingredients values to create a new recipe')
-      })
-
-      this.props = {
-         id: id || uuidv4(),
-         name,
-         ingredients,
-         howToPrepare
-      }
-   }
+    }
+  }
 }
