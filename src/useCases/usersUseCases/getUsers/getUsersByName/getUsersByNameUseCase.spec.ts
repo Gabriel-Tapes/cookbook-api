@@ -1,6 +1,6 @@
 import { User } from '../../../../entities/User'
 import { InMemoryUsersRepository } from '../../../../repositories/inMemory/inMemoryUsersRepository'
-import { GetAllUsersUseCase } from './getAllUsersUseCase'
+import { GetUsersByNameUseCase } from './getUsersByNameUseCase'
 
 describe('Get all users tests', () => {
   const newUsers = [
@@ -21,20 +21,26 @@ describe('Get all users tests', () => {
       email: 'duck.donald@duckmail.com',
       password: 'qwaak',
       accessLevel: 'user'
+    }),
+    new User({
+      name: 'scrooge mcDuck',
+      email: 'scrooge.mc_duck@duckmail.com',
+      password: 'qwaak',
+      accessLevel: 'admin'
     })
   ]
 
   test('Create an instance', () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUsersByNameUseCase = new GetUsersByNameUseCase(usersRepository)
 
-    expect(getAllUsersUseCase).toBeInstanceOf(GetAllUsersUseCase)
-    expect(getAllUsersUseCase).toHaveProperty('execute')
+    expect(getUsersByNameUseCase).toBeInstanceOf(GetUsersByNameUseCase)
+    expect(getUsersByNameUseCase).toHaveProperty('execute')
   })
 
-  it('should be the array returned length equal to total number of users in database', async () => {
+  it('should be the array returned length equal to total number of users with the given name in database', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUsersByNameUseCase = new GetUsersByNameUseCase(usersRepository)
 
     await Promise.all(
       newUsers.map(async user => {
@@ -42,15 +48,15 @@ describe('Get all users tests', () => {
       })
     )
 
-    const gettedUsers = await getAllUsersUseCase.execute()
+    const gettedUsers = await getUsersByNameUseCase.execute('Duck')
 
-    expect(gettedUsers.length).toEqual(newUsers.length)
+    expect(gettedUsers.length).toEqual(2)
   })
 
-  test('if not users in database, then an empty array is returned', async () => {
+  test('if not users with the name given, then an empty array is returned', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUsersByNameUseCase = new GetUsersByNameUseCase(usersRepository)
 
-    await expect(getAllUsersUseCase.execute()).resolves.toEqual([])
+    await expect(getUsersByNameUseCase.execute('name')).resolves.toEqual([])
   })
 })

@@ -1,8 +1,8 @@
 import { User } from '../../../../entities/User'
 import { InMemoryUsersRepository } from '../../../../repositories/inMemory/inMemoryUsersRepository'
-import { GetAllUsersUseCase } from './getAllUsersUseCase'
+import { GetUserByIdUseCase } from './getUserByIdUseCase'
 
-describe('Get all users tests', () => {
+describe('Get user by id tests', () => {
   const newUsers = [
     new User({
       name: 'Joe Doe',
@@ -26,15 +26,15 @@ describe('Get all users tests', () => {
 
   test('Create an instance', () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByIdUseCase = new GetUserByIdUseCase(usersRepository)
 
-    expect(getAllUsersUseCase).toBeInstanceOf(GetAllUsersUseCase)
-    expect(getAllUsersUseCase).toHaveProperty('execute')
+    expect(getUserByIdUseCase).toBeInstanceOf(GetUserByIdUseCase)
+    expect(getUserByIdUseCase).toHaveProperty('execute')
   })
 
-  it('should be the array returned length equal to total number of users in database', async () => {
+  it('should returns an user with the id given when exists', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByIdUseCase = new GetUserByIdUseCase(usersRepository)
 
     await Promise.all(
       newUsers.map(async user => {
@@ -42,15 +42,19 @@ describe('Get all users tests', () => {
       })
     )
 
-    const gettedUsers = await getAllUsersUseCase.execute()
+    const firstUser = newUsers[0]
 
-    expect(gettedUsers.length).toEqual(newUsers.length)
+    const user = await getUserByIdUseCase.execute(firstUser.id)
+
+    expect(user!.name).toEqual(firstUser.name)
+    expect(user!.email).toEqual(firstUser.email)
+    expect(user!.accessLevel).toEqual(firstUser.accessLevel)
   })
 
-  test('if not users in database, then an empty array is returned', async () => {
+  it('should returns null if no user with the id given', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByIdUseCase = new GetUserByIdUseCase(usersRepository)
 
-    await expect(getAllUsersUseCase.execute()).resolves.toEqual([])
+    await expect(getUserByIdUseCase.execute('AnInvalidId')).resolves.toBeNull()
   })
 })

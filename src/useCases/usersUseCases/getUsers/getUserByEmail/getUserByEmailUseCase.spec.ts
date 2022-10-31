@@ -1,8 +1,8 @@
 import { User } from '../../../../entities/User'
 import { InMemoryUsersRepository } from '../../../../repositories/inMemory/inMemoryUsersRepository'
-import { GetAllUsersUseCase } from './getAllUsersUseCase'
+import { GetUserByEmailUseCase } from './getUserByEmailUseCase'
 
-describe('Get all users tests', () => {
+describe('Get user by email tests', () => {
   const newUsers = [
     new User({
       name: 'Joe Doe',
@@ -26,15 +26,15 @@ describe('Get all users tests', () => {
 
   test('Create an instance', () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByEmailUseCase = new GetUserByEmailUseCase(usersRepository)
 
-    expect(getAllUsersUseCase).toBeInstanceOf(GetAllUsersUseCase)
-    expect(getAllUsersUseCase).toHaveProperty('execute')
+    expect(getUserByEmailUseCase).toBeInstanceOf(GetUserByEmailUseCase)
+    expect(getUserByEmailUseCase).toHaveProperty('execute')
   })
 
-  it('should be the array returned length equal to total number of users in database', async () => {
+  it('should returns an user with the email given when exists', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByEmailUseCase = new GetUserByEmailUseCase(usersRepository)
 
     await Promise.all(
       newUsers.map(async user => {
@@ -42,15 +42,18 @@ describe('Get all users tests', () => {
       })
     )
 
-    const gettedUsers = await getAllUsersUseCase.execute()
+    const user = await getUserByEmailUseCase.execute('duck.donald@duckmail.com')
 
-    expect(gettedUsers.length).toEqual(newUsers.length)
+    expect(user!.name).toEqual('Donald the Duck')
+    expect(user!.accessLevel).toEqual('user')
   })
 
-  test('if not users in database, then an empty array is returned', async () => {
+  it('should returns null if no user with the email given', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const getAllUsersUseCase = new GetAllUsersUseCase(usersRepository)
+    const getUserByEmailUseCase = new GetUserByEmailUseCase(usersRepository)
 
-    await expect(getAllUsersUseCase.execute()).resolves.toEqual([])
+    await expect(
+      getUserByEmailUseCase.execute('megaman@mega.com')
+    ).resolves.toBeNull()
   })
 })
