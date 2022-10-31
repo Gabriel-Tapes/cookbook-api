@@ -1,10 +1,10 @@
 import { PostgresUsersRepository } from '../../../../repositories/implementations/PostgresUsersRepository'
-import { FindUserByIdController } from './getUserByIdController'
-import { FindUserByIdUseCase } from './getUserByIdUseCase'
+import { GetUserByIdController } from './getUserByIdController'
+import { GetUserByIdUseCase } from './getUserByIdUseCase'
 
 const usersRepository = new PostgresUsersRepository()
 
-const findUserByIdUseCase = new FindUserByIdUseCase(usersRepository)
-const findUserByIdController = new FindUserByIdController(findUserByIdUseCase)
+const getUserByIdUseCase = new GetUserByIdUseCase(usersRepository)
+const getUserByIdController = new GetUserByIdController(getUserByIdUseCase)
 
-export { findUserByIdController }
+export { getUserByIdController }

@@ -4,8 +4,8 @@ import { getUsersByNameController } from './getUsersByName'
 import { getAllUsersController } from './getAllUsers'
 
 export {
-   getUserByEmailController,
-   getUserByIdController,
-   getUsersByNameController,
-   getAllUsersController
+  getUserByEmailController,
+  getUserByIdController,
+  getUsersByNameController,
+  getAllUsersController
 }

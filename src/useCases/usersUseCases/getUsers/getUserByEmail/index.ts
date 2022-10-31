@@ -1,10 +1,12 @@
 import { PostgresUsersRepository } from '../../../../repositories/implementations/PostgresUsersRepository'
-import { FindUserByEmailController } from './getUserByEmailController'
-import { FindUserByEmailUseCase } from './getUserByEmailUseCase'
+import { GetUserByEmailController } from './getUserByEmailController'
+import { GetUserByEmailUseCase } from './getUserByEmailUseCase'
 
 const usersRepository = new PostgresUsersRepository()
 
-const findUserByEmailUseCase = new FindUserByEmailUseCase(usersRepository)
-const findUserByEmailController = new FindUserByEmailController(findUserByEmailUseCase)
+const getUserByEmailUseCase = new GetUserByEmailUseCase(usersRepository)
+const getUserByEmailController = new GetUserByEmailController(
+  getUserByEmailUseCase
+)
 
-export { findUserByEmailController }
+export { getUserByEmailController }

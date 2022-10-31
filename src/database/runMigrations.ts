@@ -1,29 +1,26 @@
 import { join as joinPath } from 'path'
 import { readdir, readFile } from 'fs'
 import { createDatabaseConnection } from './connectDatabase'
+;(async () => {
+  const client = await createDatabaseConnection()
 
-(async () => {
-   const client = await createDatabaseConnection()
+  const fileDatabaseDir = joinPath(__dirname, 'migrations')
 
-   const fileDatabaseDir = joinPath(__dirname, 'migrations')
+  console.log('Start migrations', new Date())
 
-   console.log('Start migrations', new Date())
+  readdir(fileDatabaseDir, (err, files) => {
+    if (err) console.error(err)
 
-   readdir(fileDatabaseDir, (err, files) => {
-      if (err)
-         console.error(err)
+    files.forEach(file => {
+      readFile(joinPath(fileDatabaseDir, file), async (err, content) => {
+        if (err) console.error(err)
 
-      files.forEach(file => {
-         readFile(joinPath(fileDatabaseDir, file), async (err, content) => {
-            if (err)
-               console.error(err)
-            
-            const runMigrationQuery = content.toString()
+        const runMigrationQuery = content.toString()
 
-            await client.query(runMigrationQuery)
-         })
+        await client.query(runMigrationQuery)
       })
+    })
 
-      console.log('finish migrations', new Date())
-   })
+    console.log('finish migrations', new Date())
+  })
 })()

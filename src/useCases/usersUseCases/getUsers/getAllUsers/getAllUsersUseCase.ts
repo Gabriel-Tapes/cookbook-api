@@ -1,11 +1,11 @@
 import { IUserRepository } from '../../../../repositories/IUsersRepository'
 
 export class GetAllUsersUseCase {
-   constructor (private usersRepository: IUserRepository) {}
+  constructor(private usersRepository: IUserRepository) {}
 
-   async execute() {
-      const allUsers = await this.usersRepository.getAllUsers()
+  async execute() {
+    const allUsers = await this.usersRepository.getAllUsers()
 
-      return allUsers
-   }
+    return allUsers
+  }
 }

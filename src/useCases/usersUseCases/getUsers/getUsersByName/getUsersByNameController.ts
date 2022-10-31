@@ -1,22 +1,21 @@
 import { Request, Response } from 'express'
-import { FindUsersByNameUseCase } from './getUsersByNameUseCase'
+import { GetUsersByNameUseCase } from './getUsersByNameUseCase'
 
-export class FindUsersByNameController {
-    
-   constructor (private findUsersByNameUseCase: FindUsersByNameUseCase) {}
+export class GetUsersByNameController {
+  constructor(private getUsersByNameUseCase: GetUsersByNameUseCase) {}
 
-   async handle(req: Request, res: Response) {
-      const name = req.query.name.toString()
+  async handle(req: Request, res: Response) {
+    const name = req.query.name.toString()
 
-      try {
-         const users = await this.findUsersByNameUseCase.execute(name)
-         return res.status(200).json({
-            users: users
-         })
-      } catch (err) {
-         return res.status(400).json({
-            error: err.message
-         })
-      }
-   }
+    try {
+      const users = await this.getUsersByNameUseCase.execute(name)
+      return res.status(200).json({
+        users
+      })
+    } catch (err) {
+      return res.status(400).json({
+        error: err.message
+      })
+    }
+  }
 }
