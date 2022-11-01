@@ -21,4 +21,27 @@ export class InMemoryRecipesRepository implements IRecipesRepository {
   async createRecipe(recipe: Recipe): Promise<void> {
     this.recipes.push(recipe)
   }
+
+  async editRecipe(
+    id: string,
+    { title, ingredients, howToPrepare }: Omit<Recipe, 'id'>
+  ): Promise<Recipe | null> {
+    const oldRecipeIndex = this.recipes.findIndex(recipe => recipe.id === id)
+    if (!(oldRecipeIndex + 1)) return null
+
+    const oldRecipe = this.recipes[oldRecipeIndex]
+
+    const edditedRecipe = new Recipe(
+      {
+        title: title || oldRecipe.title,
+        ingredients: ingredients || oldRecipe.ingredients,
+        howToPrepare: howToPrepare || oldRecipe.howToPrepare
+      },
+      id
+    )
+
+    this.recipes[oldRecipeIndex] = edditedRecipe
+
+    return edditedRecipe
+  }
 }
